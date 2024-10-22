@@ -7,12 +7,17 @@ const app = express();
 const PORT = 3000;
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/crudDB')
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('Could not connect to MongoDB...', err));
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://admin:admin@cluster0.bofkd.mongodb.net/crudDB', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }).then(() => {
+    console.log("Connected to MongoDB");
+  }).catch((err) => {
+    console.error("Error connecting to MongoDB: ", err);
+  });
 
 // Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 // Routes
